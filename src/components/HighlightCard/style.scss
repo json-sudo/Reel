@@ -1,0 +1,48 @@
+.highlight-card {
+    width: 32rem;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    background-color: transparent;
+    position: relative;
+    cursor: pointer;
+
+    img {
+        height: 18rem;
+        border-radius: 0.4rem;
+        background-color: var(--highlight-result-bg);
+        object-fit: cover;
+    }
+
+    h3 {
+        max-width: 80%;
+        font-size: 1.4rem;
+        font-weight: 600;
+        line-height: 1.9rem;
+        text-align: left;
+    }
+}
+
+.details {
+    margin-top: 1.2rem;
+    display: flex;
+    justify-content: space-between;
+
+    p {
+        color: var(--muted-text);
+        line-height: 1.6rem;
+    }
+}
+
+.duration {
+    position: absolute;
+    top: 15rem;
+    right: 0.8rem;
+    padding: 2px 6px;
+    border-radius: 2px;
+    background-color: rgba(black, 0.65);
+    color: white;
+    font-family: 'Cousine', monospace;
+    font-size: 1rem;
+    line-height: 1.5rem;
+}

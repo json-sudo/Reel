@@ -1,5 +1,6 @@
 import HighlightCard from '../HighlightCard';
 import type { Highlight } from '../../shared/types/highlight';
+import './styles.scss';
 
 type CompetitionSectionProps = {
     competitionName: string;
@@ -17,7 +18,7 @@ const CompetitionSection = ({
     if (highlights.length === 0) return null;
 
     return (
-        <section data-competition-rank={rank}>
+        <section className="competition-section" data-competition-rank={rank}>
             <h2>{competitionName}</h2>
             <ul>
                 {highlights.map((highlight) => (

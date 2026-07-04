@@ -1,5 +1,6 @@
 import type { Highlight } from '../../shared/types/highlight';
 import { formatRecency } from '../../shared/utils/time';
+import './style.scss';
 
 type HighlightCardProps = {
     highlight: Highlight;
@@ -8,14 +9,15 @@ type HighlightCardProps = {
 
 const HighlightCard = ({ highlight, onSelect }: HighlightCardProps) => {
     return (
-        <button type="button" onClick={() => onSelect(highlight)}>
+        <button className="highlight-card" type="button" onClick={() => onSelect(highlight)}>
             {highlight.thumbnail && (
-                <img src={highlight.thumbnail} alt="" />
+                <img src={highlight.thumbnail} alt={`${highlight.title}`} />
             )}
-            <p>{highlight.title}</p>
-            <p>{highlight.homeTeam} vs {highlight.awayTeam}</p>
-            <p>{formatRecency(highlight.publishedAt)}</p>
-            <p>{highlight.duration}</p>
+            <div className="details">
+                <h3>{highlight.title}</h3>
+                <p>{formatRecency(highlight.publishedAt)}</p>
+            </div>
+            <p className="duration">{highlight.duration}</p>
         </button>
     );
 };

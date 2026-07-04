@@ -12,6 +12,12 @@ html {
     color-scheme: light dark;
 }
 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 ::-webkit-scrollbar {
 	width: 6px;
 }
