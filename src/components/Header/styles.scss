@@ -1,7 +1,7 @@
-
+@use '../../shared/styles/variables';
 
 .header {
-    height: 5.2rem;
+    height: variables.$header-height;
     padding: 0 4.8rem;
     border-bottom: 1px solid var(--border-color);
     position: fixed;
@@ -9,8 +9,61 @@
     z-index: 99;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+
+    a {
+        color: var(--text-color);
+        font-size: 2.2rem;
+        font-family: 'Instrument serif', serif;
+        font-style: italic;
+        text-decoration: none;
+        transition: text-decoration 0.3s ease-out;
+
+        &:hover, &:focus {
+            outline: none;
+            text-decoration: underline;
+        }
+    }
+}
+
+.header--scrolled {
+    background-color: var(--p-header-scrolled-bg);
+    border-bottom: 1px solid var(--p-border);
+    box-shadow:
+        0 1px 3px rgba(0, 0, 0, 0.1),
+        0 1px 2px -1px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(8px);
 }
 
 .header-controls {
     display: flex;
+    align-items: center;
+
+    .divider {
+        width: 1px;
+        height: 1.6rem;
+        margin-left: 0.8rem;
+        background-color: var(--border-color);
+    }
+}
+
+.theme-btn {
+    width: 3.2rem;
+    height: 3.2rem;
+    display: grid;
+    place-items: center;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    color: var(--muted-text);
+
+    svg {
+        width: 1.6rem;
+        height: 1.6rem;
+        transition: color 0.3s ease-out;
+    }
+
+    &:hover svg, &:focus svg {
+        color: var(--text-color);
+    }
 }

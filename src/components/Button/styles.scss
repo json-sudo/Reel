@@ -1,3 +1,27 @@
 .button {
-    
+    cursor: pointer;
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+}
+
+.header-btn {
+    padding: 0.6rem 1.2rem;
+    color: var(--muted-text);
+    transition: color 0.3s ease-out, border-color 0.3s ease-out;
+
+    &:hover, &:focus {
+        border-color: var(--text-color);
+        color: var(--text-color);
+    }
+}
+
+.has-icon {
+    display: flex;
+    gap: 0.8rem;
+    align-items: center;
+
+    svg {
+        width: 1.2rem;
+        height: 1.2rem;
+    }
 }

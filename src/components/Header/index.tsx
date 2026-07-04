@@ -12,6 +12,7 @@ import {
 
 import DarkThemeIcon from '../../assets/dark-theme.icon';
 import LightThemeIcon from '../../assets/light-theme.icon';
+import SearchIcon from '../../assets/search.icon';
 
 import './styles.scss'
 
@@ -57,8 +58,9 @@ const Header = () => {
             <a href='/'>Reel</a>
 
             <div className='header-controls'>
-                <Button text='Search a fixture' type='header' />
-                <button onClick={changeTheme}>
+                <Button text='Search a fixture' icon={<SearchIcon />} type='header' />
+                <div className="divider" />
+                <button className="theme-btn" onClick={changeTheme}>
                     {
                         isDarkTheme ? <LightThemeIcon /> : <DarkThemeIcon />
                     }

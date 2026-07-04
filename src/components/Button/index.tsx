@@ -7,14 +7,17 @@ type ButtonProps = {
     icon?: ReactNode;
 }
 
-const Button = ({text, type}: ButtonProps) => {
+const Button = ({text, type, icon}: ButtonProps) => {
     const headerBtn = type === 'header';
     const clearSearchBtn = type === 'clearSearch';
     const outlinedBtn = type === 'outlined'
-    const classesString = `${headerBtn ? ' header-btn' : ''}${clearSearchBtn ? ' clear-btn' : ''}${outlinedBtn ? ' outlined-btn' : ''}`;
+    const classesString = `${headerBtn ? ' header-btn' : ''}${clearSearchBtn ? ' clear-btn' : ''}${outlinedBtn ? ' outlined-btn' : ''}${icon ? ' has-icon' : ''}`;
 
     return (
-        <button className={`button${classesString}`}>{text}</button>
+        <button className={`button${classesString}`}>
+            {icon ? icon : ''}
+            {text}
+        </button>
     )
 };
 
