@@ -1,0 +1,16 @@
+
+
+.header {
+    height: 5.2rem;
+    padding: 0 4.8rem;
+    border-bottom: 1px solid var(--border-color);
+    position: fixed;
+    inset: 0;
+    z-index: 99;
+    display: flex;
+    justify-content: space-between;
+}
+
+.header-controls {
+    display: flex;
+}

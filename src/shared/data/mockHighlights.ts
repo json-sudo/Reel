@@ -1,0 +1,88 @@
+import type { Highlight } from '../types/highlight';
+
+function hoursAgo(hours: number): string {
+    return new Date(Date.now() - hours * 60 * 60 * 1000).toISOString();
+}
+
+export const mockHighlights: Highlight[] = [
+    {
+        competitionId: 'world-cup',
+        homeTeam: 'Brazil',
+        awayTeam: 'Argentina',
+        url: 'https://www.youtube.com/watch?v=9bZkp7q19f0',
+        title: 'Brazil 2–1 Argentina',
+        publishedAt: hoursAgo(2),
+        thumbnail: 'https://img.youtube.com/vi/9bZkp7q19f0/hqdefault.jpg',
+        duration: '11:02',
+    },
+    {
+        competitionId: 'champions-league',
+        homeTeam: 'Real Madrid',
+        awayTeam: 'Manchester City',
+        url: 'https://www.youtube.com/watch?v=M7lc1UVf-VE',
+        title: 'Real Madrid 1–1 Manchester City',
+        publishedAt: hoursAgo(8),
+        thumbnail: 'https://img.youtube.com/vi/M7lc1UVf-VE/hqdefault.jpg',
+        duration: '12:05',
+    },
+    {
+        competitionId: 'premier-league',
+        homeTeam: 'Arsenal',
+        awayTeam: 'Chelsea',
+        url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        title: 'Arsenal 2–1 Chelsea',
+        publishedAt: hoursAgo(3),
+        thumbnail: 'https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg',
+        duration: '10:24',
+    },
+    {
+        competitionId: 'premier-league',
+        homeTeam: 'Liverpool',
+        awayTeam: 'Manchester United',
+        url: 'https://www.youtube.com/watch?v=jNQXAC9IVRw',
+        title: 'Liverpool 3–0 Manchester United',
+        publishedAt: hoursAgo(5),
+        thumbnail: 'https://img.youtube.com/vi/jNQXAC9IVRw/hqdefault.jpg',
+        duration: '8:12',
+    },
+    {
+        competitionId: 'la-liga',
+        homeTeam: 'Barcelona',
+        awayTeam: 'Sevilla',
+        url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        title: 'Barcelona 2–0 Sevilla',
+        publishedAt: hoursAgo(6),
+        thumbnail: 'https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg',
+        duration: '9:30',
+    },
+    {
+        competitionId: 'serie-a',
+        homeTeam: 'Inter Milan',
+        awayTeam: 'Juventus',
+        url: 'https://www.youtube.com/watch?v=jNQXAC9IVRw',
+        title: 'Inter 1–0 Juventus',
+        publishedAt: hoursAgo(7),
+        thumbnail: 'https://img.youtube.com/vi/jNQXAC9IVRw/hqdefault.jpg',
+        duration: '9:15',
+    },
+    {
+        competitionId: 'bundesliga',
+        homeTeam: 'Bayern Munich',
+        awayTeam: 'Borussia Dortmund',
+        url: 'https://www.youtube.com/watch?v=jNQXAC9IVRw',
+        title: 'Bayern 2–2 Dortmund',
+        publishedAt: hoursAgo(30),
+        thumbnail: 'https://img.youtube.com/vi/jNQXAC9IVRw/hqdefault.jpg',
+        duration: '10:01',
+    },
+    {
+        competitionId: 'premier-league',
+        homeTeam: 'Burnley',
+        awayTeam: 'Luton Town',
+        url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        title: 'Burnley 1–0 Luton',
+        publishedAt: hoursAgo(4),
+        thumbnail: 'https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg',
+        duration: '7:45',
+    },
+];

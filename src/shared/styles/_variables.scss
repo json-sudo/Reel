@@ -1,0 +1,21 @@
+@mixin light-theme {
+    --text-color: #111110;
+    --border-color: color-mix(in srgb, var(--text-color) 10%, transparent);
+    --highlight-result-bg: #E4E1D8;
+    --body-bg: #F5F4EF;
+    --muted-text: #7A7A72;
+    --input-placeholder: color-mix(in srgb, var(--muted-text) 60%, transparent);
+    --scrollbar-thumb: #D1D1D1;
+    --scrollbar-track: transparent;
+}
+
+@mixin dark-theme {
+    --text-color: #EDF0EE;
+    --border-color: color-mix(in srgb, var(--text-color) 10%, transparent);
+    --highlight-result-bg: #1A3435;
+    --body-bg: #0B1A1B;
+    --muted-text: #8A9E9F;
+    --input-placeholder: color-mix(in srgb, var(--muted-text) 60%, transparent);
+    --scrollbar-thumb:  #2E4A4C;
+    --scrollbar-track:  transparent;
+}
