@@ -8,5 +8,5 @@ export type Highlight = {
     title: string;
     publishedAt: string;
     thumbnail?: string;
-    duration: string;
+    duration?: string;
 };

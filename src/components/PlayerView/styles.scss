@@ -1,0 +1,50 @@
+.player-view {
+    padding: 3.2rem 4.8rem;
+}
+
+.outlined-btn.has-icon {
+    border: none;
+    color: var(--muted-text);
+    transition: color 0.3s ease-out;
+
+    &:hover, &:focus {
+        color: var(--text-color);
+    }
+}
+
+.iframe-wrapper {
+    width: 100%;
+    max-width: 89.6rem;
+    height: 50.4rem;
+    margin-top: 2rem;
+
+    iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+        border-radius: 2px;
+    }
+}
+
+h1 {
+    margin-top: 2rem;
+    font-size: 2.8rem;
+    line-height: 3.5rem;
+    font-weight: 600;
+}
+
+.player-view__details {
+    margin-top: 1rem;
+    display: flex;
+    gap: 1.6rem;
+}
+
+.player-view__competition {
+    color: #D4672A;
+    text-transform: uppercase;
+    line-height: 1.5rem;
+}
+
+.player-view__recency {
+    color: var(--muted-text);
+}

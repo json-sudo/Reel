@@ -1,5 +1,4 @@
 import CompetitionSection from '../../components/CompetitionSection';
-import { getFeaturedWindowLabel } from '../../shared/constants/featured';
 import type { Highlight } from '../../shared/types/highlight';
 import type { FeaturedHomepageResult } from '../../shared/utils/featuredSelection';
 
@@ -9,13 +8,10 @@ type HomePageProps = {
 };
 
 const HomePage = ({ featured, onSelectHighlight }: HomePageProps) => {
-    const { sections, fallbackStep } = featured;
-    const showWindowLabel =
-        fallbackStep.windowHours > 24 || !fallbackStep.rankedTeamsOnly;
+    const { sections } = featured;
 
     return (
         <main>
-            {showWindowLabel && <p>{getFeaturedWindowLabel(fallbackStep)}</p>}
             {sections.map((section) => (
                 <CompetitionSection
                     key={section.competitionId}

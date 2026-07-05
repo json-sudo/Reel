@@ -17,7 +17,7 @@ const HighlightCard = ({ highlight, onSelect }: HighlightCardProps) => {
                 <h3>{highlight.title}</h3>
                 <p>{formatRecency(highlight.publishedAt)}</p>
             </div>
-            <p className="duration">{highlight.duration}</p>
+            {highlight.duration && <p className="duration">{highlight.duration}</p>}
         </button>
     );
 };

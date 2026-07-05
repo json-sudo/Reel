@@ -1,0 +1,15 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+  functions = "netlify/functions"
+
+[dev]
+  command = "npm run dev"
+  framework = "vite"
+  targetPort = 5173
+
+# Frontend calls /highlights/* which maps to the serverless functions.
+[[redirects]]
+  from = "/highlights/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
