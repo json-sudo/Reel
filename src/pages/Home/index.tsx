@@ -1,10 +1,11 @@
-import CompetitionSection from '../../components/CompetitionSection';
-import type { Highlight } from '../../shared/types/highlight';
+import CompetitionSection, {
+    type SelectHighlightHandler,
+} from '../../components/CompetitionSection';
 import type { FeaturedHomepageResult } from '../../shared/utils/featuredSelection';
 
 type HomePageProps = {
     featured: FeaturedHomepageResult;
-    onSelectHighlight: (highlight: Highlight) => void;
+    onSelectHighlight: SelectHighlightHandler;
 };
 
 const HomePage = ({ featured, onSelectHighlight }: HomePageProps) => {

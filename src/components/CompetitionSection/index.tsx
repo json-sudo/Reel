@@ -2,11 +2,16 @@ import HighlightCard from '../HighlightCard';
 import type { Highlight } from '../../shared/types/highlight';
 import './styles.scss';
 
+export type SelectHighlightHandler = (
+    highlight: Highlight,
+    playlist: Highlight[],
+) => void;
+
 type CompetitionSectionProps = {
     competitionName: string;
     rank: number;
     highlights: Highlight[];
-    onSelectHighlight: (highlight: Highlight) => void;
+    onSelectHighlight: SelectHighlightHandler;
 };
 
 const CompetitionSection = ({
@@ -25,7 +30,7 @@ const CompetitionSection = ({
                     <li key={highlight.url}>
                         <HighlightCard
                             highlight={highlight}
-                            onSelect={onSelectHighlight}
+                            onSelect={(item) => onSelectHighlight(item, highlights)}
                         />
                     </li>
                 ))}

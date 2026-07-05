@@ -22,6 +22,7 @@ type LoadStatus = 'loading' | 'ready' | 'error';
 
 function App() {
     const [selectedHighlight, setSelectedHighlight] = useState<Highlight | null>(null);
+    const [selectedPlaylist, setSelectedPlaylist] = useState<Highlight[] | null>(null);
     const [highlights, setHighlights] = useState<Highlight[]>([]);
     const [status, setStatus] = useState<LoadStatus>('loading');
     const [errorReason, setErrorReason] = useState<FeaturedErrorReason>('upstream');
@@ -56,13 +57,25 @@ function App() {
 
     const featured = status === 'ready' ? getFeaturedHomepage(highlights) : null;
 
+    const handleSelectHighlight = (highlight: Highlight, playlist: Highlight[]) => {
+        setSelectedHighlight(highlight);
+        setSelectedPlaylist(playlist);
+    };
+
+    const handleBackFromPlayer = () => {
+        setSelectedHighlight(null);
+        setSelectedPlaylist(null);
+    };
+
     return (
         <>
             <Header />
-            {selectedHighlight ? (
+            {selectedHighlight && selectedPlaylist ? (
                 <PlayerView
                     highlight={selectedHighlight}
-                    onBack={() => setSelectedHighlight(null)}
+                    playlist={selectedPlaylist}
+                    onSelectHighlight={handleSelectHighlight}
+                    onBack={handleBackFromPlayer}
                 />
             ) : status === 'loading' ? (
                 <main>
@@ -76,7 +89,7 @@ function App() {
             ) : showSearch ? (
                 <SearchPage />
             ) : featured ? (
-                <HomePage featured={featured} onSelectHighlight={setSelectedHighlight} />
+                <HomePage featured={featured} onSelectHighlight={handleSelectHighlight} />
             ) : (
                 <NoHighlightsScreen onSearch={() => setShowSearch(true)} />
             )}

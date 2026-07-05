@@ -27,6 +27,9 @@ export const importanceMap = [
             { name: 'Portugal', rank: 6 },
             { name: 'England', rank: 7 },
             { name: 'Italy', rank: 8 },
+            { name: 'Morocco', rank: 9 },
+            { name: 'Belgium', rank: 10 },
+            { name: 'Colombia', rank: 11 },
         ],
     },
     {
