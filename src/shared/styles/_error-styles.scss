@@ -1,0 +1,42 @@
+body:has(.error-page) {
+    height: 99vh;
+    display: grid;
+    place-items: center;
+}
+
+.error-page {
+    height: 17rem;
+    margin: auto 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    align-items: center;
+
+    svg, p, button {
+        color: var(--muted-text);
+    }
+
+    button {
+        padding: 0.8rem 1.4rem;
+        font-size: 1.2rem;
+        transition: color 0.3s ease-out, border-color 0.3s ease-out;
+        &:hover, &:focus {
+            border-color: var(--text-color);
+            color: var(--text-color);
+        }
+    }
+}
+
+.error-page.no-highlights {
+    h1 {
+        font-size: 2.2rem;
+        font-weight: 500;
+        color: var(--text-color);
+    }
+
+    button.has-icon:hover, button.has-icon:focus {
+        svg {
+            color: var(--text-color);
+        }
+    }
+}

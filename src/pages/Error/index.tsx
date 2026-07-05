@@ -1,3 +1,7 @@
+import Button from "../../components/Button";
+import ErrorIcon from "../../assets/error.icon";
+import './style.scss'
+
 type ErrorScreenProps = {
     reason: 'config' | 'quota' | 'upstream' | 'network';
     onRetry: () => void;
@@ -12,11 +16,10 @@ const MESSAGES: Record<ErrorScreenProps['reason'], string> = {
 
 const ErrorScreen = ({ reason, onRetry }: ErrorScreenProps) => {
     return (
-        <main>
+        <main className="error-page">
+            <ErrorIcon />
             <p>{MESSAGES[reason]}</p>
-            <button type="button" onClick={onRetry}>
-                Try again
-            </button>
+            <Button text="Try again" onClick={onRetry} />
         </main>
     );
 };
