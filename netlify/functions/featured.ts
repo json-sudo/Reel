@@ -1,12 +1,13 @@
-import { getCompetitionsByImportance } from '../../src/shared/config/importanceMap';
+import { getCompetitionsByImportance, resolveTeamInCompetition } from '../../src/shared/config/importanceMap';
 import { getPreferredChannels } from '../../src/shared/config/preferredChannels';
 import type { Highlight } from '../../src/shared/types/highlight';
-import { parseFixture } from '../../src/shared/utils/parseFixture';
+import { parseFixture, isLikelyMatchHighlight } from '../../src/shared/utils/parseFixture';
 import { isYouTubeApiError, searchChannelRecent } from './lib/youtube';
 
 const FEATURED_COMPETITION_LIMIT = 4;
 const WINDOW_DAYS = 7;
 const MEMO_TTL_MS = 30 * 60 * 1000;
+const SEARCH_MAX_RESULTS = 10;
 
 type FeaturedErrorCode = 'config' | 'quota' | 'upstream';
 
@@ -40,18 +41,30 @@ async function computeFeatured(apiKey: string): Promise<Highlight[]> {
         channelsQueried += 1;
 
         try {
-            const items = await searchChannelRecent(channel.channelId, publishedAfter, apiKey);
+            const items = await searchChannelRecent(
+                channel.channelId,
+                publishedAfter,
+                apiKey,
+                SEARCH_MAX_RESULTS,
+            );
 
             for (const item of items) {
                 if (seenVideoIds.has(item.videoId)) continue;
-                seenVideoIds.add(item.videoId);
+                if (!isLikelyMatchHighlight(item.title)) continue;
 
-                const { homeTeam, awayTeam } = parseFixture(item.title);
+                const parsed = parseFixture(item.title);
+                if (!parsed.homeTeam || !parsed.awayTeam) continue;
+
+                const homeResolved = resolveTeamInCompetition(competition.id, parsed.homeTeam);
+                const awayResolved = resolveTeamInCompetition(competition.id, parsed.awayTeam);
+                if (!homeResolved && !awayResolved) continue;
+
+                seenVideoIds.add(item.videoId);
 
                 highlights.push({
                     competitionId: competition.id,
-                    homeTeam,
-                    awayTeam,
+                    homeTeam: homeResolved?.name ?? parsed.homeTeam,
+                    awayTeam: awayResolved?.name ?? parsed.awayTeam,
                     url: `https://www.youtube.com/watch?v=${item.videoId}`,
                     title: item.title,
                     publishedAt: item.publishedAt,

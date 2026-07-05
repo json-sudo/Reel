@@ -136,7 +136,7 @@ export async function searchChannelRecent(
         part: 'snippet',
         type: 'video',
         order: 'date',
-        q: 'highlights',
+        q: 'highlights vs',
         publishedAfter: publishedAfterISO,
         maxResults: String(maxResults),
     });

@@ -154,16 +154,49 @@ export function getCompetitionRank(id: CompetitionId): number {
 }
 
 export function getTeamRank(competitionId: CompetitionId, teamName: string): number | null {
+    const resolved = resolveTeamInCompetition(competitionId, teamName);
+    return resolved?.rank ?? null;
+}
+
+function escapeRegExp(value: string): string {
+    return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function teamNameMatchesRaw(canonicalName: string, raw: string): boolean {
+    const name = canonicalName.toLowerCase().trim();
+    const segment = raw.trim().toLowerCase();
+    if (!name || !segment) return false;
+    if (segment === name) return true;
+
+    if (segment.includes(name)) {
+        if (name.length <= 4) {
+            return new RegExp(`\\b${escapeRegExp(name)}\\b`, 'i').test(raw);
+        }
+        return true;
+    }
+
+    if (name.includes(segment) && segment.length >= 4) {
+        return true;
+    }
+
+    return false;
+}
+
+export function resolveTeamInCompetition(
+    competitionId: CompetitionId,
+    teamName: string,
+): { name: string; rank: number } | null {
     const competition = competitionById.get(competitionId);
     if (!competition) return null;
 
     const normalized = teamName.trim().toLowerCase();
+    if (!normalized) return null;
 
     for (const team of competition.teams) {
         const aliases = 'aliases' in team ? team.aliases : [];
         const names = [team.name, ...aliases];
-        if (names.some((name) => name.toLowerCase() === normalized)) {
-            return team.rank;
+        if (names.some((name) => teamNameMatchesRaw(name, teamName))) {
+            return { name: team.name, rank: team.rank };
         }
     }
 
