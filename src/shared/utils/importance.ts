@@ -14,6 +14,7 @@ export function sortHighlightsByImportance(highlights: Highlight[]): Highlight[]
 }
 
 export function getCompetitionDisplayName(competitionId: CompetitionId): string {
+    if (competitionId === 'unknown') return 'Other';
     return getCompetitionById(competitionId)?.name ?? competitionId;
 }
 

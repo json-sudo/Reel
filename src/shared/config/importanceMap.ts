@@ -142,18 +142,20 @@ export const importanceMap = [
 
 export type RankedCompetition = (typeof importanceMap)[number];
 export type RankedTeam = RankedCompetition['teams'][number];
-export type CompetitionId = RankedCompetition['id'];
+export type RankedCompetitionId = RankedCompetition['id'];
+export type CompetitionId = RankedCompetitionId | 'unknown';
 
 const competitionById = new Map(
     importanceMap.map((competition) => [competition.id, competition] as const),
 );
 
 export function getCompetitionById(id: CompetitionId): RankedCompetition | undefined {
+    if (id === 'unknown') return undefined;
     return competitionById.get(id);
 }
 
 export function getCompetitionRank(id: CompetitionId): number {
-    return competitionById.get(id)?.rank ?? Number.MAX_SAFE_INTEGER;
+    return getCompetitionById(id)?.rank ?? Number.MAX_SAFE_INTEGER;
 }
 
 export function getTeamRank(competitionId: CompetitionId, teamName: string): number | null {
@@ -189,7 +191,7 @@ export function resolveTeamInCompetition(
     competitionId: CompetitionId,
     teamName: string,
 ): { name: string; rank: number } | null {
-    const competition = competitionById.get(competitionId);
+    const competition = getCompetitionById(competitionId);
     if (!competition) return null;
 
     const normalized = teamName.trim().toLowerCase();

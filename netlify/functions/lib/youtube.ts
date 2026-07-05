@@ -2,6 +2,7 @@ export type YouTubeSearchItem = {
     videoId: string;
     title: string;
     publishedAt: string;
+    channelId?: string;
     thumbnailUrl?: string | undefined;
 };
 
@@ -15,19 +16,19 @@ export type YouTubeErrorReason =
 export class YouTubeApiError extends Error {
     readonly status: number;
     readonly reason: YouTubeErrorReason;
-    readonly channelId?: string;
+    readonly context?: string;
 
     constructor(
         message: string,
         status: number,
         reason: YouTubeErrorReason,
-        channelId?: string,
+        context?: string,
     ) {
         super(message);
         this.name = 'YouTubeApiError';
         this.status = status;
         this.reason = reason;
-        this.channelId = channelId;
+        this.context = context;
     }
 
     get isFatal(): boolean {
@@ -45,6 +46,7 @@ type RawSearchResponse = {
         snippet?: {
             title?: string;
             publishedAt?: string;
+            channelId?: string;
             thumbnails?: Record<string, { url?: string } | undefined>;
         };
     }>;
@@ -92,15 +94,14 @@ function mapApiReason(rawReason: string | undefined): YouTubeErrorReason {
 function throwYouTubeApiError(
     data: RawSearchResponse,
     httpStatus: number,
-    channelId: string,
+    context: string,
 ): never {
     const rawReason = data.error?.errors?.[0]?.reason;
     const reason = mapApiReason(rawReason);
     const message =
-        data.error?.message ??
-        `YouTube search.list failed (${httpStatus}) for channel ${channelId}`;
+        data.error?.message ?? `YouTube search.list failed (${httpStatus}) for ${context}`;
 
-    throw new YouTubeApiError(message, httpStatus, reason, channelId);
+    throw new YouTubeApiError(message, httpStatus, reason, context);
 }
 
 function mapItems(data: RawSearchResponse): YouTubeSearchItem[] {
@@ -115,31 +116,64 @@ function mapItems(data: RawSearchResponse): YouTubeSearchItem[] {
                 title: snippet.title,
                 publishedAt: snippet.publishedAt,
             };
+
+            if (snippet.channelId) {
+                entry.channelId = snippet.channelId;
+            }
+
             const thumbnailUrl = pickThumbnail(snippet.thumbnails);
             if (thumbnailUrl !== undefined) {
                 entry.thumbnailUrl = thumbnailUrl;
             }
+
             return entry;
         })
         .filter((item): item is YouTubeSearchItem => item !== null);
 }
 
-export async function searchChannelRecent(
-    channelId: string,
-    publishedAfterISO: string,
-    apiKey: string,
-    maxResults = 5,
-): Promise<YouTubeSearchItem[]> {
+export type SearchVideosOptions = {
+    apiKey: string;
+    q: string;
+    channelId?: string | undefined;
+    publishedAfter?: string | undefined;
+    publishedBefore?: string | undefined;
+    maxResults?: number | undefined;
+    order?: 'date' | 'relevance' | undefined;
+};
+
+export async function searchVideos(options: SearchVideosOptions): Promise<YouTubeSearchItem[]> {
+    const {
+        apiKey,
+        q,
+        channelId,
+        publishedAfter,
+        publishedBefore,
+        maxResults = 5,
+        order = 'relevance',
+    } = options;
+
     const params = new URLSearchParams({
         key: apiKey,
-        channelId,
         part: 'snippet',
         type: 'video',
-        order: 'date',
-        q: 'highlights vs',
-        publishedAfter: publishedAfterISO,
+        order,
+        q,
         maxResults: String(maxResults),
     });
+
+    if (channelId) {
+        params.set('channelId', channelId);
+    }
+
+    if (publishedAfter) {
+        params.set('publishedAfter', publishedAfter);
+    }
+
+    if (publishedBefore) {
+        params.set('publishedBefore', publishedBefore);
+    }
+
+    const context = channelId ? `channel ${channelId}` : `query "${q}"`;
 
     const response = await fetch(`${SEARCH_ENDPOINT}?${params.toString()}`, {
         signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
@@ -148,8 +182,24 @@ export async function searchChannelRecent(
     const data = (await response.json()) as RawSearchResponse;
 
     if (!response.ok || data.error) {
-        throwYouTubeApiError(data, response.status, channelId);
+        throwYouTubeApiError(data, response.status, context);
     }
 
     return mapItems(data);
+}
+
+export async function searchChannelRecent(
+    channelId: string,
+    publishedAfterISO: string,
+    apiKey: string,
+    maxResults = 5,
+): Promise<YouTubeSearchItem[]> {
+    return searchVideos({
+        apiKey,
+        channelId,
+        q: 'highlights vs',
+        publishedAfter: publishedAfterISO,
+        maxResults,
+        order: 'date',
+    });
 }

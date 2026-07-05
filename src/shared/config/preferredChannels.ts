@@ -1,4 +1,4 @@
-import type { CompetitionId } from './importanceMap';
+import type { CompetitionId, RankedCompetitionId } from './importanceMap';
 
 export type PreferredChannel = {
     name: string;
@@ -21,7 +21,7 @@ export type PreferredChannel = {
  *   - Open the channel on YouTube -> "About"/"Share channel" -> "Copy channel ID",
  *     or read it from the channel URL (youtube.com/channel/UC...).
  */
-export const preferredChannels: Record<CompetitionId, PreferredChannel[]> = {
+export const preferredChannels: Record<RankedCompetitionId, PreferredChannel[]> = {
     'world-cup': [
         { name: 'FOX Sports', channelId: 'UCwNqHDsnBCKT-olwJwIFyfg' },
     ],
@@ -49,5 +49,19 @@ export const preferredChannels: Record<CompetitionId, PreferredChannel[]> = {
 };
 
 export function getPreferredChannels(competitionId: CompetitionId): PreferredChannel[] {
+    if (competitionId === 'unknown') return [];
     return preferredChannels[competitionId] ?? [];
+}
+
+export function getCompetitionForChannel(channelId: string): CompetitionId | null {
+    for (const [competitionId, channels] of Object.entries(preferredChannels)) {
+        if (channels.some((channel) => channel.channelId === channelId)) {
+            return competitionId as CompetitionId;
+        }
+    }
+    return null;
+}
+
+export function isPreferredChannel(channelId: string): boolean {
+    return getCompetitionForChannel(channelId) !== null;
 }
