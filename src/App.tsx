@@ -28,26 +28,29 @@ function App() {
     const [errorReason, setErrorReason] = useState<FeaturedErrorReason>('upstream');
     const [showSearch, setShowSearch] = useState(false);
     const [fetchAttempt, setFetchAttempt] = useState(0);
+    const [featuredStale, setFeaturedStale] = useState(false);
 
     const loadFeatured = useCallback(() => {
         setStatus('loading');
         setErrorReason('upstream');
+        setFeaturedStale(false);
 
         fetchFeaturedHighlights()
             .then((result) => {
-                if (!result.ok) {
-                    if (OFFLINE_FALLBACK) {
-                        setHighlights(mockHighlights);
-                        setStatus('ready');
-                        return;
-                    }
-                    setErrorReason(result.reason);
-                    setStatus('error');
+                if (result.ok) {
+                    setHighlights(result.highlights);
+                    setFeaturedStale(result.stale === true);
+                    setStatus('ready');
                     return;
                 }
 
-                setHighlights(result.highlights);
-                setStatus('ready');
+                if (OFFLINE_FALLBACK) {
+                    setHighlights(mockHighlights);
+                    setStatus('ready');
+                } else {
+                    setErrorReason(result.reason);
+                    setStatus('error');
+                }
             });
     }, []);
 
@@ -89,7 +92,11 @@ function App() {
             ) : showSearch ? (
                 <SearchPage />
             ) : featured ? (
-                <HomePage featured={featured} onSelectHighlight={handleSelectHighlight} />
+                <HomePage
+                    featured={featured}
+                    stale={featuredStale}
+                    onSelectHighlight={handleSelectHighlight}
+                />
             ) : (
                 <NoHighlightsScreen onSearch={() => setShowSearch(true)} />
             )}

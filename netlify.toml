@@ -13,3 +13,6 @@
   from = "/highlights/*"
   to = "/.netlify/functions/:splat"
   status = 200
+
+[functions."refresh-featured"]
+  schedule = "0 */4 * * *"

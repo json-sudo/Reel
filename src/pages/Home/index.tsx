@@ -5,14 +5,20 @@ import type { FeaturedHomepageResult } from '../../shared/utils/featuredSelectio
 
 type HomePageProps = {
     featured: FeaturedHomepageResult;
+    stale?: boolean;
     onSelectHighlight: SelectHighlightHandler;
 };
 
-const HomePage = ({ featured, onSelectHighlight }: HomePageProps) => {
+const HomePage = ({ featured, stale = false, onSelectHighlight }: HomePageProps) => {
     const { sections } = featured;
 
     return (
         <main>
+            {stale && (
+                <p className="featured-stale-notice">
+                    Showing cached highlights — refresh may be delayed.
+                </p>
+            )}
             {sections.map((section) => (
                 <CompetitionSection
                     key={section.competitionId}

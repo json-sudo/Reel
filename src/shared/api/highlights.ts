@@ -3,11 +3,13 @@ import type { Highlight } from '../types/highlight';
 export type FeaturedErrorReason = 'config' | 'quota' | 'upstream' | 'network';
 
 export type FeaturedResult =
-    | { ok: true; highlights: Highlight[] }
+    | { ok: true; highlights: Highlight[]; cached?: boolean; stale?: boolean }
     | { ok: false; reason: FeaturedErrorReason };
 
 type FeaturedSuccessResponse = {
     highlights: Highlight[];
+    cached?: boolean;
+    stale?: boolean;
 };
 
 type FeaturedErrorResponse = {
@@ -38,7 +40,12 @@ export async function fetchFeaturedHighlights(): Promise<FeaturedResult> {
             return { ok: false, reason: mapHttpError(data) };
         }
 
-        return { ok: true, highlights: data.highlights ?? [] };
+        return {
+            ok: true,
+            highlights: data.highlights ?? [],
+            cached: data.cached,
+            stale: data.stale,
+        };
     } catch {
         return { ok: false, reason: 'network' };
     }

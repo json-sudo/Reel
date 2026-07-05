@@ -38,7 +38,7 @@ const Header = () => {
         const headerEl = headerRef.current;
         if (!headerEl) return;
 
-        const threshold = headerEl.offsetHeight * 1.08;
+        const threshold = headerEl.offsetHeight * 1.02;
 
         const handleScroll = () => {
             setIsScrolled(window.scrollY > threshold);
